@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>计算器</title>
+    <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/bootstrap-3.3.4/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/fontawesome/css/font-awesome.css" rel="stylesheet">
+    <link href="https://magicbox.bk.tencent.com/static_api/v3/bk/css/bk.css" rel="stylesheet">
+    <link href="https://magicbox.bk.tencent.com/static_api/v3/bk/css-pro/bk.css" rel="stylesheet">
+    <link href="../../static/css/common.css" rel="stylesheet">
+    <link href="../../static/css/index.css" rel="stylesheet">
+    <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/js/jquery-1.10.2.min.js"></script>
+    <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/bootstrap-3.3.4/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+    <nav class="bk-horz-nav11">
+        <div class="bk-nav-logo fl">
+            <img src="https://magicbox.bk.tencent.com/static_api/v3/bk/images/logo1.png">计算器
+        </div>
+        <ul class="bk-nav-links fr">
+            <li>
+                <a href="/">首页</a>
+            </li>
+            <li class="active">
+                <a href="/result">计算结果</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="search-result-box">
+        <form class="bk-form bk-inline-form search-form clearfix">
+            <div class="bk-form-item bk-form-large">
+                <div class="bk-form-content">
+                    <input type="text" id="input_str" class="bk-form-input search-input" value="{% if input_str %}{{ input_str }}{% endif %}" placeholder="输入计算表达式" style="width:540px;">
+                </div>
+            </div>
+            <div class="bk-form-item">
+                <div class="bk-form-content">
+                    <a class="bk-button bk-primary bk-button-large search-button" href="javascript:calculate();" title="计算">计算</a>
+                </div>
+            </div>
+            <div id="result" style="font-size: 100px" class="search-logo">{% if result %} {{ result }} {% else %} 0 {% endif %}</div>
+<!--            <p class="result-tip">找到48120条结果（用时0.02秒）</p>-->
+        </form>
+    </div>
+    <div class="page-content">
+        <div class="page-content-wrapper">
+
+            <div class="bk-panel bk-panel-title-btns">
+                <div class="bk-panel-header" role="tab">
+                    <div class="panel-title">计算器历史记录</div>
+                    <div class="panel-btns">
+                    </div>
+                </div>
+                <div class="bk-panel-body">
+                    <table class="bk-table has-thead-bordered">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>表达式</th>
+                                <th>计算结果</th>
+                                <th>时间</th>
+                            </tr>
+                        </thead>
+                        <tbody id="history_list">
+                        {% for item in history %}
+                            <tr>
+                                <td>{{ item.id }}</td>
+                                <td>{{ item.input_str }}</td>
+                                <td>{{ item.result }}</td>
+                                <td>
+                                    {{ item.pub_time|date:"Y-m-d H:m:s" }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="bk-panel-footer"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bk-footer">
+        <div class="bk-footer-links">
+            <ul>
+                <li>
+                    <a href="###">QQ咨询</a>
+                </li>
+                <li>
+                    <a href="###">蓝鲸论坛</a>
+                </li>
+                <li>
+                    <a href="###">蓝鲸官网</a>
+                </li>
+                <li>
+                    <a href="###">蓝鲸智云工作台</a>
+                </li>
+            </ul>
+        </div>
+        <p class="bk-footer-copyright">
+            Copyright &copy; 2012-2017 Tencent BlueKing. All Rights Reserved. 蓝鲸智云 版权所有
+        </p>
+    </footer>
+    <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/js/jquery-1.10.2.min.js"></script>
+    <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/bootstrap-3.3.4/js/bootstrap.min.js"></script>
+</body>
+<script>
+    function dateFormat(fmt, date) {
+        let ret;
+        const opt = {
+            "Y+": date.getFullYear().toString(),        // 年
+            "m+": (date.getMonth() + 1).toString(),     // 月
+            "d+": date.getDate().toString(),            // 日
+            "H+": date.getHours().toString(),           // 时
+            "M+": date.getMinutes().toString(),         // 分
+            "S+": date.getSeconds().toString()          // 秒
+        };
+        for (let k in opt) {
+            ret = new RegExp("(" + k + ")").exec(fmt);
+            if (ret) {
+                fmt = fmt.replace(ret[1], (ret[1].length == 1) ? (opt[k]) : (opt[k].padStart(ret[1].length, "0")))
+            };
+        };
+        return fmt;
+    }
+    //发送请求，并刷新列表
+    function calculate() {
+        if (!$("#input_str").val()){
+            alert("输入表达式不能为空")
+            return
+        }
+        $.ajax({
+            url:"/calculate/",
+            method:"POST",
+            data:{
+                "input_str":$("#input_str").val(),
+                "csrfmiddlewaretoken":"{{csrf_token}}"
+            },
+            success:function (res) {
+                if(res.status == "true"){
+                    $("#result").html(res.message.result)
+                    var pub_time = new Date(res.message.pub_time)
+                    var datetime = dateFormat("YYYY-mm-dd HH:MM:SS",pub_time)
+                    $("#history_list").prepend(" <tr>\n" +
+                        "<td>"+res.message.id+"</td>\n" +
+                        "<td>"+res.message.input_str+"</td>\n" +
+                        "<td>"+res.message.result+"</td>\n" +
+                        "<td>"+datetime+"</td>\n" +
+                        "</tr>")
+
+                    $.parser.parse($("#history_list"));
+
+                }else {
+                    alert("输入的表达式有误！")
+                }
+            }
+
+        })
+    }
+</script>
+</html>

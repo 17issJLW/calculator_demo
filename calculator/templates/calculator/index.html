@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>计算器</title>
+    <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/bootstrap-3.3.4/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/bk-icon-2.0/iconfont.css" rel="stylesheet">
+    <link href="https://magicbox.bk.tencent.com/static_api/v3/bk/css/bk.css" rel="stylesheet">
+    <link href="https://magicbox.bk.tencent.com/static_api/v3/bk/css-pro/bk.css" rel="stylesheet">
+    <link href="../../static/css/common.css" rel="stylesheet">
+    <link href="../../static/css/index.css" rel="stylesheet">
+    <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/js/jquery-1.10.2.min.js"></script>
+    <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/bootstrap-3.3.4/js/bootstrap.min.js"></script>
+
+</head>
+
+<body>
+
+    <nav class="bk-horz-nav11">
+        <div class="bk-nav-logo fl">
+            <img src="https://magicbox.bk.tencent.com/static_api/v3/bk/images/logo1.png">计算器
+        </div>
+
+        <ul class="bk-nav-links fr">
+            <li class="active">
+                <a href="/">首页</a>
+            </li>
+            <li>
+                <a href="/result">计算结果</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="search-wrapper">
+        <form class="bk-form bk-inline-form search-form clearfix" style="margin-bottom: 20px;" >
+            <div class="search-logo">
+                <img src="../../static/images/search-logo.png" alt="">
+            </div>
+            <div class="bk-form-item bk-form-larger" >
+                <div class="bk-form-content">
+                    <input type="text" id="input_str" class="bk-form-input search-input" placeholder="输入计算内容" style="width:540px;">
+                </div>
+            </div>
+            <div class="bk-form-item">
+                <div class="bk-form-content">
+                    <a class="bk-button bk-primary bk-button-larger search-button" href="javascript:calculate();" title="计算">计算</a>
+                </div>
+            </div>
+        </form>
+        <div class="bk-form clearfix">
+            <table  style="width: 200px;margin: 0 auto;">
+                <tbody>
+                    <tr>
+                        <td><a class="bk-button bk-primary bk-button-larger" href="javascript:click_button('C');">C</a></td>
+                        <td><a class="bk-button bk-primary bk-button-larger" href="javascript:click_button('(');">(</a></td>
+                        <td><a class="bk-button bk-primary bk-button-larger" href="javascript:click_button(')');">)</a></td>
+                        <td><a class="bk-button bk-primary bk-button-larger" href="javascript:click_button('**');">**</a></td>
+                    </tr>
+                    <tr>
+                        <td><a class="bk-button bk-primary bk-button-larger" href="javascript:click_button(7);">7</a></td>
+                        <td><a class="bk-button bk-primary bk-button-larger" href="javascript:click_button(8);">8</a></td>
+                        <td><a class="bk-button bk-primary bk-button-larger" href="javascript:click_button(9);">9</a></td>
+                        <td><a class="bk-button bk-primary bk-button-larger" href="javascript:click_button('+');">+</a><td>
+                    </tr>
+                    <tr>
+                        <td><a class="bk-button bk-primary bk-button-larger" href="javascript:click_button(4);">4</a></td>
+                        <td><a class="bk-button bk-primary bk-button-larger" href="javascript:click_button(5);">5</a></td>
+                        <td><a class="bk-button bk-primary bk-button-larger" href="javascript:click_button(6);">6</a></td>
+                        <td><a class="bk-button bk-primary bk-button-larger" href="javascript:click_button('-');">-</a><td>
+                    </tr>
+                    <tr>
+                        <td><a class="bk-button bk-primary bk-button-larger" href="javascript:click_button(1);">1</a></td>
+                        <td><a class="bk-button bk-primary bk-button-larger" href="javascript:click_button(2);">2</a></td>
+                        <td><a class="bk-button bk-primary bk-button-larger" href="javascript:click_button(3);">3</a></td>
+                        <td><a class="bk-button bk-primary bk-button-larger" href="javascript:click_button('*');">*</a><td>
+                    </tr>
+                    <tr>
+                        <td><a class="bk-button bk-primary bk-button-larger" href="javascript:click_button('Del');">Del</a></td>
+                        <td><a class="bk-button bk-primary bk-button-larger" href="javascript:click_button(0);">0</a></td>
+                        <td><a class="bk-button bk-primary bk-button-larger" href="javascript:click_button('.');">.</a></td>
+                        <td><a class="bk-button bk-primary bk-button-larger" href="javascript:click_button('/');">/</a><td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <footer class="bk-footer mt0">
+        <div class="bk-footer-links">
+            <ul>
+                <li>
+                    <a href="###">QQ咨询</a>
+                </li>
+                <li>
+                    <a href="###">蓝鲸论坛</a>
+                </li>
+                <li>
+                    <a href="###">蓝鲸官网</a>
+                </li>
+                <li>
+                    <a href="###">蓝鲸智云工作台</a>
+                </li>
+            </ul>
+        </div>
+        <p class="bk-footer-copyright">
+            Copyright &copy; 2012-2017 Tencent BlueKing. All Rights Reserved. 蓝鲸智云 版权所有
+        </p>
+    </footer>
+
+</body>
+<script>
+    // 发送请求，并跳转页面
+    function calculate(){
+        if (!$("#input_str").val()){
+            alert("输入表达式不能为空")
+            return
+        }
+        $.ajax({
+        url:"/calculate/",
+        method:"POST",
+        data:{
+            "input_str":$("#input_str").val(),
+            "csrfmiddlewaretoken": '{{ csrf_token }}'
+        },
+        success: function (res) {
+            if(res.status == "true"){
+                console.log(res)
+                window.location.href = "/result?input_str="+res.message.input_str.replace(/\+/,"2B%")+"&result="+res.message.result
+            }else {
+                alert("输入的表达式有误！")
+            }
+
+        }
+        })
+    }
+    var brackets = 0
+    var point = true
+    function click_button(id) {
+        var str =$("#input_str").val()
+        if([0,1,2,3,4,5,6,7,8,9].includes(id)){
+            if(str.charAt(str.length-1)!=")"){
+                $("#input_str").val($("#input_str").val() + id)
+            }
+
+        }
+        else if(id == "C"){
+            $("#input_str").val("")
+            point = true
+            brackets = 0
+        }else if(id=="Del"){
+            if(str.length==0) return
+            if(str.charAt(str.length-1) == "(") brackets = brackets - 1;
+            if(str.charAt(str.length-1) == ")") brackets = brackets + 1;
+            if(str.charAt(str.length-1) == ".") point = true;
+            $("#input_str").val(str.slice(0,str.length-1))
+        }else if(["*","/","**"].includes(id)){
+            if(["0","1","2","3","4","5","6","7","8","9",")"].includes(str.charAt(str.length-1))){
+                $("#input_str").val($("#input_str").val() + id)
+                point = true
+            }
+        }else if (["+","-"].includes(id)){
+            $("#input_str").val($("#input_str").val() + id)
+            point = true
+        } else if(id == "."){
+            if(["0","1","2","3","4","5","6","7","8","9",""].includes(str.charAt(str.length-1)) && point){
+                $("#input_str").val($("#input_str").val() + id)
+                point = false
+            }
+        }else if(id == "("){
+            if(["+","-","*","/","**",""].includes(str.charAt(str.length-1))){
+                brackets += 1
+                $("#input_str").val($("#input_str").val() + id)
+            }
+        }else if(id == ")"){
+            if(!["+","-","*","/","**"].includes(str.charAt(str.length-1)) && brackets > 0){
+                $("#input_str").val($("#input_str").val() + id)
+                point = false
+                brackets -= 1
+            }
+        }
+    }
+
+</script>
+
+</html>
