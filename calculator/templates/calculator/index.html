@@ -126,7 +126,7 @@
         success: function (res) {
             if(res.status == "true"){
                 console.log(res)
-                window.location.href = "/result?input_str="+res.message.input_str.replace(/\+/,"2B%")+"&result="+res.message.result
+                window.location.href = "/result?input_str="+res.message.input_str.replace(/\+/g,"2B%")+"&result="+res.message.result
             }else {
                 alert("输入的表达式有误！")
             }
