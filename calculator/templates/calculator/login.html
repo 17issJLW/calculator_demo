@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>注册登陆</title>
+    <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/bootstrap-3.3.4/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://magicbox.bk.tencent.com/static_api/v3/assets/bk-icon-2.0/iconfont.css" rel="stylesheet">
+    <link href="https://magicbox.bk.tencent.com/static_api/v3/bk/css/bk.css" rel="stylesheet">
+    <link href="https://magicbox.bk.tencent.com/static_api/v3/bk/css-pro/bk.css" rel="stylesheet">
+    <link href="../../static/css/common.css" rel="stylesheet">
+    <link href="../../static/css/index.css" rel="stylesheet">
+    <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/js/jquery-1.10.2.min.js"></script>
+    <script src="https://magicbox.bk.tencent.com/static_api/v3/assets/bootstrap-3.3.4/js/bootstrap.min.js"></script>
+
+</head>
+
+<body>
+
+    <nav class="bk-horz-nav11">
+        <div class="bk-nav-logo fl">
+            <img src="https://magicbox.bk.tencent.com/static_api/v3/bk/images/logo1.png">注册登陆
+        </div>
+
+    </nav>
+
+    <div class="search-wrapper">
+        <form class="bk-form login-form" style="width:400px;">
+            <div class="bk-form-item">
+                <label class="bk-label" style="color: #fafafa;" >用户名</label>
+                <div class="bk-form-content">
+                    <input type="text" class="bk-form-input" id="username" name="username" placeholder="请输入用户名">
+                </div>
+            </div>
+            <div class="bk-form-item">
+                <label class="bk-label" style="color: #fafafa;">密码</label>
+                <div class="bk-form-content">
+                    <input type="password" class="bk-form-input ignore" id="password" oninput="check_password()" placeholder="请输入密码">
+                </div>
+            </div>
+            <div class="bk-form-item">
+                <label class="bk-label" style="color: #fafafa;">确认密码</label>
+                <div class="bk-form-content">
+                    <input type="password" class="bk-form-input ignore" id="password_confirm" oninput="check_password()" placeholder="请再次输入密码">
+                </div>
+            </div>
+            <div class="bk-form-item">
+                <label class="bk-label" style="color: #fafafa;">性别</label>
+                <div class="bk-form-content">
+                    <select name="validation_select" id="sex" class="bk-form-select">
+                        <option value="男生">男生</option>
+                        <option value="女生">女生</option>
+                    </select>
+                </div>
+            </div>
+            <div class="bk-form-item bk-form-action">
+                <div class="bk-form-content">
+                    <a class="bk-button bk-primary" id="register" href="javascript:register();" title="注册">注册</a>
+<!--                    <a class="bk-button" title="取消">取消</a>-->
+                    <p class="tips" id="tips"> </p>
+                </div>
+
+            </div>
+        </form>
+
+    </div>
+
+    <footer class="bk-footer mt0">
+        <div class="bk-footer-links">
+            <ul>
+                <li>
+                    <a href="###">QQ咨询</a>
+                </li>
+                <li>
+                    <a href="###">蓝鲸论坛</a>
+                </li>
+                <li>
+                    <a href="###">蓝鲸官网</a>
+                </li>
+                <li>
+                    <a href="###">蓝鲸智云工作台</a>
+                </li>
+            </ul>
+        </div>
+        <p class="bk-footer-copyright">
+            Copyright &copy; 2012-2017 Tencent BlueKing. All Rights Reserved. 蓝鲸智云 版权所有
+        </p>
+    </footer>
+
+</body>
+<script>
+    // 发送请求，并跳转页面
+    function check_password() {
+        var password = $("#password").val()
+        var password_confirm = $("#password_confirm").val()
+        if(password.length < 6){
+            $("#tips").html("密码太短")
+            return false
+        }
+        if(password != password_confirm){
+            $("#tips").html("两次输入密码不相等")
+            $.parser.parse();
+            return false
+        }
+        return true
+
+    }
+
+    function register(){
+        if (!$("#username").val()){
+            alert("用户名不合法")
+            return
+        }
+        $.ajax({
+        url:"/login/",
+        method:"POST",
+        data:{
+            "username":$("#username").val(),
+            "password":$("#password").val(),
+            "sex":$("#sex").val(),
+            "csrfmiddlewaretoken": '{{ csrf_token }}'
+        },
+        success: function (res) {
+            if(res.status == "true"){
+                console.log(res)
+                window.location.href = "/"
+            }else {
+                $("#tips").html(res.message)
+            }
+
+        }
+        })
+    }
+
+
+</script>
+
+</html>
