@@ -22,7 +22,7 @@
             <img src="https://magicbox.bk.tencent.com/static_api/v3/bk/images/logo1.png">计算器
         </div>
         <div class="bk-nav-user fr">
-            <span>{{ request.user.username }}</span>
+            <span>{{ request.user.username }}{{request.user.myuser.sex}}</span>
 <!--            <img src="./images/avatar.png">-->
         </div>
         <ul class="bk-nav-links fr">
@@ -135,12 +135,16 @@
                 console.log(res)
                 window.location.href = "/result?input_str="+res.message.input_str.replace(/\+/g,"2B%")+"&result="+res.message.result
             }else {
-                alert("输入的表达式有误！")
+                alert(res.message)
             }
 
         }
         })
     }
+    function keyup() {
+        var str =$("#input_str").val()
+    }
+
     var brackets = 0
     var point = true
     function click_button(id) {
