@@ -4,9 +4,13 @@
     height: 735px;
     background: #333c4d url(../images/search_bg.jpg) no-repeat center top;
 }
+.register-form{
+    margin-top: 50px;
+    margin-left: 200px;
+}
 .login-form{
-    margin-top: 30px;
-    margin-left: 60px;
+    margin-top: 50px;
+    margin-right: 200px;
 }
 .tips{
     margin-top: 5px;

@@ -26,7 +26,7 @@ def result(request):
     result = request.GET.get("result",0)
     input_str = request.GET.get("input_str","").replace("2B%","+")
     history = History.objects.filter(myuser__user=request.user)
-    logger.info("{} 查看了历史记录".format())
+    logger.info("{} 查看了历史记录".format(request.user.username))
     return render(request,"calculator/result.html",
                   {"result":result,"input_str":input_str,"history":history})
 
@@ -38,11 +38,12 @@ def user_login(request):
     """
     if request.method == "POST":
         username = request.POST.get("username")
-        password = request.POST.get("username")
-        user = MyUser.objects.filter(user__username=username,user__password=password).first()
+        password = request.POST.get("password")
+        # user = MyUser.objects.filter(user__username=username,user__password=password).first()
+        user = authenticate(username=username, password=password)
         if user is not None:
-            login(request,user.user)
-            logger.info("{} 登陆成功！".format(user.user.username))
+            login(request,user)
+            logger.info("{} 登陆成功！".format(user.username))
             return JsonResponse({"status":"true","message": model_to_dict(user)})
         return JsonResponse({"status":"false","message":"用户名/密码错误"})
 
@@ -63,6 +64,7 @@ def user_register(request):
 
             user = User(username=username)
             user.set_password(password)
+            user.save()
             myUser = MyUser.objects.create(user=user,sex=sex)
 
 
@@ -100,6 +102,7 @@ def calculate(request):
         result = eval(input_str)
     except Exception as e:
         return JsonResponse({"status": "false", "message": str(e)})
-    history = History.objects.create(input_str=input_str,result=result)
+    myuser = MyUser.objects.get(user=request.user)
+    history = History.objects.create(myuser=myuser,input_str=input_str,result=result)
 
     return JsonResponse({"status": "true", "message": model_to_dict(history)})

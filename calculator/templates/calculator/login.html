@@ -25,7 +25,7 @@
     </nav>
 
     <div class="search-wrapper">
-        <form class="bk-form login-form" style="width:400px;">
+        <form class="bk-form register-form" style="width:400px;float: left">
             <div class="bk-form-item">
                 <label class="bk-label" style="color: #fafafa;" >用户名</label>
                 <div class="bk-form-content">
@@ -58,6 +58,29 @@
                     <a class="bk-button bk-primary" id="register" href="javascript:register();" title="注册">注册</a>
 <!--                    <a class="bk-button" title="取消">取消</a>-->
                     <p class="tips" id="tips"> </p>
+                </div>
+
+            </div>
+        </form>
+        <form class="bk-form login-form" style="width:400px;float: right;">
+            <div class="bk-form-item">
+                <label class="bk-label" style="color: #fafafa;" >用户名</label>
+                <div class="bk-form-content">
+                    <input type="text" class="bk-form-input" id="username_login" name="username" placeholder="请输入用户名">
+                </div>
+            </div>
+            <div class="bk-form-item">
+                <label class="bk-label" style="color: #fafafa;">密码</label>
+                <div class="bk-form-content">
+                    <input type="password" class="bk-form-input ignore" id="password_login" placeholder="请输入密码">
+                </div>
+            </div>
+
+            <div class="bk-form-item bk-form-action">
+                <div class="bk-form-content">
+                    <a class="bk-button bk-primary" id="login" href="javascript:login();" title="登陆">登陆</a>
+<!--                    <a class="bk-button" title="取消">取消</a>-->
+                    <p class="tips" id="login_tips"> </p>
                 </div>
 
             </div>
@@ -97,22 +120,48 @@
             $("#tips").html("密码太短")
             return false
         }
-        if(password != password_confirm){
+        else if(password != password_confirm){
             $("#tips").html("两次输入密码不相等")
             $.parser.parse();
             return false
         }
+        else {
+            $("#tips").html(" ")
+        }
         return true
 
+    }
+    function login() {
+        var username = $("#username_login").val()
+        var password = $("#password_login").val()
+        $.ajax({
+            url: "/login/",
+            method: "POST",
+            data: {
+                "username":username,
+                "password":password,
+                "csrfmiddlewaretoken":"{{csrf_token}}"
+            },
+            success: function (res) {
+                if(res.status == "true"){
+                    window.location.href = "/"
+                }else {
+                    $("#login_tips").html(res.message)
+                }
+            }
+        })
     }
 
     function register(){
         if (!$("#username").val()){
-            alert("用户名不合法")
+            $("#tips").html("用户名不合法")
             return
         }
+        if(!check_password()){
+            return;
+        }
         $.ajax({
-        url:"/login/",
+        url:"/register/",
         method:"POST",
         data:{
             "username":$("#username").val(),
