@@ -21,13 +21,19 @@
         <div class="bk-nav-logo fl">
             <img src="https://magicbox.bk.tencent.com/static_api/v3/bk/images/logo1.png">计算器
         </div>
-
+        <div class="bk-nav-user fr">
+            <span>{{ request.user.username }}{{request.user.myuser.sex}}</span>
+<!--            <img src="./images/avatar.png">-->
+        </div>
         <ul class="bk-nav-links fr">
             <li class="active">
                 <a href="/">首页</a>
             </li>
             <li>
                 <a href="/result">计算结果</a>
+            </li>
+            <li>
+                <a href="/logout">注销</a>
             </li>
         </ul>
     </nav>
@@ -47,6 +53,7 @@
                     <a class="bk-button bk-primary bk-button-larger search-button" href="javascript:calculate();" title="计算">计算</a>
                 </div>
             </div>
+
         </form>
         <div class="bk-form clearfix">
             <table  style="width: 200px;margin: 0 auto;">
@@ -128,12 +135,16 @@
                 console.log(res)
                 window.location.href = "/result?input_str="+res.message.input_str.replace(/\+/g,"2B%")+"&result="+res.message.result
             }else {
-                alert("输入的表达式有误！")
+                alert(res.message)
             }
 
         }
         })
     }
+    function keyup() {
+        var str =$("#input_str").val()
+    }
+
     var brackets = 0
     var point = true
     function click_button(id) {
